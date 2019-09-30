@@ -107,7 +107,7 @@ public class MarksDaoImpl implements MarksDao {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new DBException("Unable to view marks", e);
+			throw new DBException("Unable to update marks", e);
 		} finally {
 			DbUtils.close(connection, preparedStatement);
 		}
@@ -292,6 +292,9 @@ public class MarksDaoImpl implements MarksDao {
 		preparedStatement = null;
 		resultSet = null;
 		marksList=null;
+		int id = 0;
+		int total=0;
+		int count=0;
 		try {
 			marksList=new ArrayList<Marks>();
 			connection = DbUtils.getConnection();
@@ -299,9 +302,14 @@ public class MarksDaoImpl implements MarksDao {
 			preparedStatement = connection.prepareStatement(sql);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()) {
+				if(id==0) 
+				{
+					id=resultSet.getInt("st.regno");
+				}
 				Marks marks = new Marks();
 				Subjects subjects=new Subjects();
 				Students students=new Students();
+				total=total+resultSet.getInt("m.marks");
 				students.setRegistrationNumber(resultSet.getInt("st.regno"));
 				students.setName(resultSet.getString("st.name"));
 				marks.setStudent(students);
@@ -309,7 +317,28 @@ public class MarksDaoImpl implements MarksDao {
 				subjects.setName(resultSet.getString("s.name"));
 				marks.setId(resultSet.getInt("m.id"));		
 				marks.setSubjects(subjects);
+				count++;
 				marks.setMarks(resultSet.getInt("m.marks"));
+				GradesDaoImpl gradesDaoImpl=new GradesDaoImpl();
+				if(id!=resultSet.getInt("st.regno")) 
+				{
+					id=resultSet.getInt("st.regno");	
+					int average=total/count;
+					String grade=gradesDaoImpl.getGrade(average);
+					marks.setGrade(grade);
+					total=0;
+				}
+				/*if(resultSet.next() == false) 
+				{
+					marks=new Marks();
+					int average=total/count;
+					String grade=gradesDaoImpl.getGrade(average);
+					marks.setGrade(grade);
+				}
+				else
+				{
+					resultSet.previous();
+				}*/
 				marksList.add(marks);
 			}
 		} catch (Exception e) {

@@ -70,7 +70,7 @@ ResultSet resultSet;
 		String grade=null;
 		try {
 			connection = DbUtils.getConnection();
-			String sql = "select grade from grades where ? between minmark and maxmark;";
+			String sql = "select grade from grades where ? between minmark and maxmark";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, mark);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -84,6 +84,7 @@ ResultSet resultSet;
 		finally {
 			DbUtils.close(connection, preparedStatement);
 		}
+		System.out.println("Mark:"+ mark +", grade="+ grade);
 		return grade;
 	}
 	public boolean checkGradeAvailability(char grade) {

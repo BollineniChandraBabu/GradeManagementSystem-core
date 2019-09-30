@@ -36,6 +36,10 @@ Scanner scanner=new Scanner(System.in);
 	public List<Marks> viewAllMarks() throws ServiceException {
 		try {
 			marksList = marksDAOImpl.viewAllMarks();	
+			
+			
+			
+			
 		}
 			catch (DBException e) {
 				Logger.error(e);
@@ -82,10 +86,12 @@ Scanner scanner=new Scanner(System.in);
 		boolean result=false;
 		try 
 		{
-			result=marksDAOImpl.updateMarks(marks);
+			result=marksDAOImpl.insertMarks(marks);
+			
 		}
 		catch (DBException e) {
-			result=marksDAOImpl.insertMarks(marks);
+			e.printStackTrace();
+			result=marksDAOImpl.updateMarks(marks);
 			throw new ServiceException("Unable to View" +e);
 		}
 		return result;
