@@ -14,13 +14,14 @@ public boolean checkDepartment(int id)
 result=departmentsDaoImpl.checkDepartment(id);
 return result;	
 }
-public void viewDepartments()
+public List<Departments> viewDepartments()
 {
 List<Departments> departmentsList=departmentsDaoImpl.viewDepartments();
 	for(Departments departments:departmentsList)
 	{
 		Logger.info(departments.getId() +":" +departments.getName());
 	}
+	return departmentsList;
 }
 
 
