@@ -173,5 +173,8 @@ return marksList;
 public boolean checkSubjectById(int subjectId) {
 	return marksDAOImpl.checkSubjectById(subjectId);
 }
+public List<Marks> viewStudentMarks(int studentId) {
+	return marksDAOImpl.viewStudentMarks(studentId);
+}
 
 }

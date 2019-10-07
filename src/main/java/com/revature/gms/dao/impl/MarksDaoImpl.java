@@ -348,4 +348,8 @@ public class MarksDaoImpl implements MarksDao {
 			DbUtils.close(connection, preparedStatement);
 		}
 		return marksList;
-}}
+}
+
+	public List<Marks> viewStudentMarks(int studentId) {
+		return getMarksById(studentId);
+	}}
